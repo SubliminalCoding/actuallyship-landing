@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ActuallyShip — The thinking layer before your coding agent.</title>
+  <meta name="description" content="Turn messy product ideas into scoped decisions, build-ready briefs, and clear next steps. Stop thrashing and start shipping.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #0a0a0a;
+      --surface: #141414;
+      --surface-raised: #1a1a1a;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-strong: rgba(255, 255, 255, 0.14);
+      --text-primary: #e5e5e5;
+      --text-secondary: #737373;
+      --text-tertiary: #525252;
+      --accent: #a3a3a3;
+      --accent-soft: rgba(255, 255, 255, 0.06);
+      --radius: 12px;
+      --radius-sm: 8px;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+
+    /* --- Nav --- */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 0 24px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(10, 10, 10, 0.8);
+      backdrop-filter: saturate(180%) blur(16px);
+      -webkit-backdrop-filter: saturate(180%) blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo span {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.5px;
+    }
+
+    .nav-cta {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--bg);
+      background: var(--text-primary);
+      border: none;
+      padding: 7px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .nav-cta:hover {
+      background: #fff;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
+    }
+
+    /* --- Layout --- */
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* --- Hero --- */
+    .hero {
+      position: relative;
+      padding-top: 160px;
+      padding-bottom: 140px;
+      text-align: center;
+    }
+
+    .hero-glow {
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      height: 400px;
+      background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 40%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .hero .container {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      background: var(--accent-soft);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--accent);
+      margin-bottom: 32px;
+      letter-spacing: 0.2px;
+    }
+
+    .hero-badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .hero h1 {
+      font-size: clamp(40px, 7vw, 64px);
+      font-weight: 700;
+      letter-spacing: -2px;
+      line-height: 1.05;
+      margin-bottom: 24px;
+      background: linear-gradient(180deg, #ffffff 0%, rgba(176, 189, 210, 0.7) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero .subtitle {
+      font-size: clamp(16px, 2.5vw, 18px);
+      color: var(--text-secondary);
+      line-height: 1.7;
+      max-width: 520px;
+      margin: 0 auto 44px;
+      font-weight: 400;
+    }
+
+    .cta-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .cta-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--bg);
+      background: var(--text-primary);
+      border: none;
+      padding: 14px 32px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .cta-button:hover {
+      background: #fff;
+      box-shadow: 0 0 40px rgba(255, 255, 255, 0.1), 0 4px 16px rgba(0, 0, 0, 0.4);
+      transform: translateY(-1px);
+    }
+
+    .cta-button svg {
+      width: 16px;
+      height: 16px;
+      transition: transform 0.2s ease;
+    }
+
+    .cta-button:hover svg {
+      transform: translateX(2px);
+    }
+
+    .cta-button-primary {
+      font-size: 17px;
+      padding: 16px 40px;
+      background: linear-gradient(135deg, #fff 0%, #e0e0e0 100%);
+      box-shadow: 0 0 40px rgba(255, 255, 255, 0.08), 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .cta-button-primary:hover {
+      background: #fff;
+      box-shadow: 0 0 60px rgba(255, 255, 255, 0.15), 0 4px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    .cta-button-secondary {
+      background: transparent;
+      color: var(--text-secondary);
+      border: 1px solid var(--border-strong);
+      font-weight: 500;
+    }
+
+    .cta-button-secondary:hover {
+      background: var(--accent-soft);
+      color: var(--text-primary);
+      box-shadow: none;
+      transform: translateY(-1px);
+    }
+
+    .cta-sub {
+      font-size: 13px;
+      color: var(--text-tertiary);
+    }
+
+    /* --- Divider --- */
+    .divider {
+      max-width: 680px;
+      margin: 0 auto;
+      border: none;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    }
+
+    /* --- Built For Strip --- */
+    .built-for {
+      padding: 48px 0;
+      text-align: center;
+    }
+
+    .built-for-label {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-tertiary);
+      margin-bottom: 20px;
+    }
+
+    .built-for-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .built-for-tag {
+      padding: 6px 16px;
+      background: var(--accent-soft);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--accent);
+    }
+
+    .built-for-sub {
+      font-size: 14px;
+      color: var(--text-secondary);
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    /* --- Problem Section --- */
+    .problem {
+      padding: 100px 0;
+    }
+
+    .problem-heading {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .problem-heading h2 {
+      font-size: clamp(28px, 5vw, 40px);
+      font-weight: 700;
+      letter-spacing: -1.2px;
+      line-height: 1.1;
+      margin-bottom: 8px;
+      background: linear-gradient(180deg, #ffffff 0%, rgba(176, 189, 210, 0.7) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .problem-heading .emphasis {
+      display: block;
+      font-size: clamp(28px, 5vw, 40px);
+      font-weight: 700;
+      letter-spacing: -1.2px;
+      background: linear-gradient(180deg, #ffffff 0%, rgba(176, 189, 210, 0.5) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .problem-body {
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    .problem-body > p {
+      font-size: 16px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 24px;
+    }
+
+    .problem-list {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 28px;
+    }
+
+    .problem-list li {
+      position: relative;
+      padding-left: 20px;
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 6px;
+    }
+
+    .problem-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 11px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--text-tertiary);
+    }
+
+    .problem-bottom {
+      font-size: 16px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    .problem-bottom strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    /* --- Section Shared --- */
+    .section-label {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--accent);
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    /* --- How It Works --- */
+    .how-it-works {
+      padding: 100px 0;
+    }
+
+    .steps {
+      display: grid;
+      gap: 2px;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 56px 1fr;
+      gap: 20px;
+      align-items: start;
+      padding: 28px 24px;
+      border-radius: var(--radius-sm);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      transition: all 0.25s ease;
+    }
+
+    .step:hover {
+      background: var(--surface-raised);
+      border-color: var(--border-strong);
+    }
+
+    .step-number {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      background: var(--accent-soft);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .step-content h3 {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+      letter-spacing: -0.2px;
+    }
+
+    .step-content p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+
+    /* --- Value Prop --- */
+    .value-prop {
+      padding: 100px 0;
+    }
+
+    .value-prop-heading {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .value-prop-heading h2 {
+      font-size: clamp(24px, 4vw, 32px);
+      font-weight: 700;
+      letter-spacing: -1px;
+      line-height: 1.15;
+      margin-bottom: 12px;
+      background: linear-gradient(180deg, #ffffff 0%, rgba(176, 189, 210, 0.7) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .value-prop-heading p {
+      font-size: 15px;
+      color: var(--text-secondary);
+    }
+
+    .value-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+    }
+
+    .value-item {
+      padding: 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      transition: all 0.25s ease;
+    }
+
+    .value-item:hover {
+      background: var(--surface-raised);
+      border-color: var(--border-strong);
+    }
+
+    .value-item p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .value-footnote {
+      text-align: center;
+      margin-top: 32px;
+      font-size: 15px;
+      color: var(--text-tertiary);
+      font-style: italic;
+    }
+
+    /* --- Output Section --- */
+    .output {
+      padding: 100px 0;
+    }
+
+    .output-heading {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .output-heading h2 {
+      font-size: clamp(24px, 4vw, 32px);
+      font-weight: 700;
+      letter-spacing: -1px;
+      line-height: 1.15;
+      margin-bottom: 8px;
+      background: linear-gradient(180deg, #ffffff 0%, rgba(176, 189, 210, 0.7) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .output-heading p {
+      font-size: 16px;
+      color: var(--text-secondary);
+    }
+
+    .output-card {
+      padding: 40px 36px;
+      background: linear-gradient(180deg, var(--surface-raised) 0%, var(--surface) 100%);
+      border: 1px solid var(--border-strong);
+      border-radius: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .output-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 200px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      opacity: 0.4;
+    }
+
+    .output-card h3 {
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--accent);
+      margin-bottom: 24px;
+    }
+
+    .output-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .output-list li {
+      position: relative;
+      padding-left: 24px;
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 10px;
+    }
+
+    .output-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 10px;
+      width: 8px;
+      height: 8px;
+      border-radius: 2px;
+      border: 1.5px solid var(--text-tertiary);
+    }
+
+    .output-sub {
+      text-align: center;
+      margin-top: 28px;
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    /* --- Differentiation --- */
+    .diff {
+      padding: 100px 0;
+    }
+
+    .diff-heading {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .diff-heading h2 {
+      font-size: clamp(24px, 4vw, 32px);
+      font-weight: 700;
+      letter-spacing: -1px;
+      line-height: 1.15;
+      margin-bottom: 12px;
+      background: linear-gradient(180deg, #ffffff 0%, rgba(176, 189, 210, 0.7) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .diff-heading p {
+      font-size: 15px;
+      color: var(--text-secondary);
+    }
+
+    .diff-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      margin-bottom: 32px;
+    }
+
+    .diff-item {
+      padding: 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+    }
+
+    .diff-item .label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-tertiary);
+      margin-bottom: 6px;
+    }
+
+    .diff-item p {
+      font-size: 14px;
+      color: var(--text-primary);
+      font-weight: 500;
+      line-height: 1.5;
+    }
+
+    .diff-bottom {
+      text-align: center;
+      font-size: 16px;
+      color: var(--text-secondary);
+    }
+
+    .diff-bottom strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    /* --- Who For --- */
+    .who-for {
+      padding: 100px 0;
+    }
+
+    .who-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .who-card {
+      padding: 32px 28px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+    }
+
+    .who-card.yes {
+      background: var(--surface);
+    }
+
+    .who-card.no {
+      background: transparent;
+    }
+
+    .who-card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 20px;
+      letter-spacing: -0.3px;
+    }
+
+    .who-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .who-list li {
+      position: relative;
+      padding-left: 20px;
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      margin-bottom: 10px;
+    }
+
+    .who-card.yes .who-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 8px;
+      width: 8px;
+      height: 5px;
+      border-left: 1.5px solid var(--accent);
+      border-bottom: 1.5px solid var(--accent);
+      transform: rotate(-45deg);
+    }
+
+    .who-card.no .who-list li::before {
+      content: '';
+      position: absolute;
+      left: 2px;
+      top: 7px;
+      width: 8px;
+      height: 1.5px;
+      background: var(--text-tertiary);
+    }
+
+    /* --- Benefits --- */
+    .benefits {
+      padding: 80px 0;
+    }
+
+    .benefits-heading {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .benefits-heading h2 {
+      font-size: clamp(22px, 3.5vw, 28px);
+      font-weight: 700;
+      letter-spacing: -0.8px;
+      background: linear-gradient(180deg, #ffffff 0%, rgba(176, 189, 210, 0.7) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .benefits-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+    }
+
+    .benefit {
+      padding: 20px 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    /* --- Final CTA --- */
+    .final-cta {
+      padding: 100px 0 160px;
+      text-align: center;
+      position: relative;
+    }
+
+    .final-cta-glow {
+      position: absolute;
+      bottom: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 500px;
+      height: 300px;
+      background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.03) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .final-cta .container {
+      position: relative;
+      z-index: 1;
+    }
+
+    .final-cta h2 {
+      font-size: clamp(32px, 5.5vw, 48px);
+      font-weight: 700;
+      letter-spacing: -1.5px;
+      line-height: 1.08;
+      margin-bottom: 16px;
+      background: linear-gradient(180deg, #ffffff 0%, rgba(176, 189, 210, 0.65) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .final-cta p {
+      font-size: 16px;
+      color: var(--text-secondary);
+      margin-bottom: 40px;
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* --- Footer --- */
+    footer {
+      padding: 24px;
+      text-align: center;
+    }
+
+    footer p {
+      font-size: 12px;
+      color: var(--text-tertiary);
+    }
+
+    /* --- Scroll Animations --- */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .stagger-1 { transition-delay: 0.05s; }
+    .stagger-2 { transition-delay: 0.1s; }
+    .stagger-3 { transition-delay: 0.15s; }
+    .stagger-4 { transition-delay: 0.2s; }
+    .stagger-5 { transition-delay: 0.25s; }
+    .stagger-6 { transition-delay: 0.3s; }
+
+    /* --- Mobile --- */
+    @media (max-width: 640px) {
+      .hero {
+        padding-top: 120px;
+        padding-bottom: 100px;
+      }
+
+      .hero-glow {
+        width: 360px;
+        height: 280px;
+      }
+
+      .built-for,
+      .problem,
+      .how-it-works,
+      .value-prop,
+      .output,
+      .diff,
+      .who-for,
+      .benefits {
+        padding: 60px 0;
+      }
+
+      .final-cta {
+        padding: 60px 0 120px;
+      }
+
+      .step {
+        grid-template-columns: 44px 1fr;
+        gap: 16px;
+        padding: 20px 16px;
+      }
+
+      .value-grid,
+      .diff-grid,
+      .who-grid,
+      .benefits-list {
+        grid-template-columns: 1fr;
+      }
+
+      .output-card {
+        padding: 28px 20px;
+      }
+
+      .who-card {
+        padding: 24px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav>
+    <div class="logo"><span>ActuallyShip</span></div>
+    <a href="https://buy.stripe.com/00w28r4JU2Bm3wH6b8f7i08" class="nav-cta">Start a shipping session</a>
+  </nav>
+
+  <!-- 1. Hero -->
+  <section class="hero">
+    <div class="hero-glow"></div>
+    <div class="container">
+      <div class="hero-badge fade-up">
+        <span class="hero-badge-dot"></span>
+        Now in early access
+      </div>
+      <h1 class="fade-up stagger-1">The thinking layer<br>before your coding agent.</h1>
+      <p class="subtitle fade-up stagger-2">Turn messy product ideas into scoped decisions, build-ready briefs, and clear next steps. Stop thrashing and start shipping.</p>
+      <div class="cta-group fade-up stagger-3">
+        <div class="cta-row">
+          <a href="https://buy.stripe.com/00w28r4JU2Bm3wH6b8f7i08" class="cta-button cta-button-primary">
+            Start a shipping session
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8H12.5M9 4.5L12.5 8L9 11.5"/></svg>
+          </a>
+          <a href="#how" class="cta-button cta-button-secondary">See how it works</a>
+        </div>
+        <span class="cta-sub">Free for 7 days, then $29.99/mo. Cancel anytime.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Built For Strip -->
+  <section class="built-for">
+    <div class="container fade-up">
+      <p class="built-for-label">Built for</p>
+      <div class="built-for-tags">
+        <span class="built-for-tag">Solo founders</span>
+        <span class="built-for-tag">Indie hackers</span>
+        <span class="built-for-tag">Vibe coders</span>
+        <span class="built-for-tag">AI-assisted builders</span>
+      </div>
+      <p class="built-for-sub">Use ActuallyShip before you open Claude, Codex, Gemini, or any coding agent.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 3. Problem Section -->
+  <section class="problem">
+    <div class="container">
+      <div class="problem-heading fade-up">
+        <h2>You don't have an idea problem.</h2>
+        <span class="emphasis">You have a clarity problem.</span>
+      </div>
+      <div class="problem-body fade-up stagger-1">
+        <p>Most builders don't get stuck because they can't code. They get stuck because they're trying to build from:</p>
+        <ul class="problem-list">
+          <li>Half-formed ideas</li>
+          <li>Fuzzy priorities</li>
+          <li>Bad scope</li>
+          <li>Conflicting directions</li>
+          <li>Prompts that aren't clear enough to produce good work</li>
+        </ul>
+        <p class="problem-bottom">So they open a coding agent too early, build the wrong thing, and spend hours untangling avoidable mistakes. <strong>ActuallyShip helps you get clear first.</strong></p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 4. How It Works -->
+  <section class="how-it-works" id="how">
+    <div class="container">
+      <p class="section-label fade-up">How ActuallyShip works</p>
+      <div class="steps">
+        <div class="step fade-up stagger-1">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h3>Add project context</h3>
+            <p>Tell ActuallyShip what you're building, who it's for, your current goal, bottlenecks, constraints, and any notes or docs that matter.</p>
+          </div>
+        </div>
+        <div class="step fade-up stagger-2">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h3>Talk through the real decision</h3>
+            <p>ActuallyShip helps you think through scope, priorities, tradeoffs, and next steps with your actual product context in mind.</p>
+          </div>
+        </div>
+        <div class="step fade-up stagger-3">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h3>Generate a build brief</h3>
+            <p>Walk away with a structured artifact: what you're building, who it's for, recommended direction, MVP scope, what not to build yet, first 3 steps, and a coding-agent handoff prompt.</p>
+          </div>
+        </div>
+        <div class="step fade-up stagger-4">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <h3>Resume and keep shipping</h3>
+            <p>Come back to the same project later, pick up where you left off, and keep moving without losing context.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 5. Output / Artifact Section -->
+  <section class="output">
+    <div class="container">
+      <div class="output-heading fade-up">
+        <h2>You don't leave with "good thoughts."</h2>
+        <p>You leave with something you can use.</p>
+      </div>
+      <div class="output-card fade-up stagger-1">
+        <h3>Every session produces</h3>
+        <ul class="output-list">
+          <li>A clearer product direction</li>
+          <li>Tighter MVP scope</li>
+          <li>Fewer distractions</li>
+          <li>A real next move</li>
+          <li>A prompt or brief you can hand to a coding agent</li>
+        </ul>
+      </div>
+      <p class="output-sub fade-up stagger-2">Less second-guessing once it's time to build.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 6. Differentiation Section -->
+  <section class="diff">
+    <div class="container">
+      <div class="diff-heading fade-up">
+        <h2>Not another AI chatbot.</h2>
+        <p>ActuallyShip is different because it's built around:</p>
+      </div>
+      <div class="diff-grid fade-up stagger-1">
+        <div class="diff-item">
+          <div class="label">Instead of</div>
+          <p>One-off prompts</p>
+        </div>
+        <div class="diff-item">
+          <div class="label">ActuallyShip uses</div>
+          <p>Project context</p>
+        </div>
+        <div class="diff-item">
+          <div class="label">Instead of</div>
+          <p>Vague conversations</p>
+        </div>
+        <div class="diff-item">
+          <div class="label">ActuallyShip uses</div>
+          <p>Structured outputs</p>
+        </div>
+        <div class="diff-item">
+          <div class="label">Instead of</div>
+          <p>Starting over every time</p>
+        </div>
+        <div class="diff-item">
+          <div class="label">ActuallyShip uses</div>
+          <p>Resumable workflow</p>
+        </div>
+        <div class="diff-item">
+          <div class="label">Instead of</div>
+          <p>Generic "coaching"</p>
+        </div>
+        <div class="diff-item">
+          <div class="label">ActuallyShip uses</div>
+          <p>Shipping decisions</p>
+        </div>
+      </div>
+      <p class="diff-bottom fade-up stagger-2">Designed for one job: <strong>help builders get clear enough to ship.</strong></p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 7. Who It's For / Not For -->
+  <section class="who-for">
+    <div class="container">
+      <div class="who-grid fade-up">
+        <div class="who-card yes">
+          <h3>ActuallyShip is for you if...</h3>
+          <ul class="who-list">
+            <li>You have real product ideas but keep circling scope</li>
+            <li>You use coding agents and want better results from them</li>
+            <li>You're a solo founder or indie builder making product decisions alone</li>
+            <li>You keep bouncing between features instead of shipping the core thing</li>
+            <li>You want a clearer path from idea to decision to execution</li>
+          </ul>
+        </div>
+        <div class="who-card no">
+          <h3>This is not for...</h3>
+          <ul class="who-list">
+            <li>Generic life coaching</li>
+            <li>Vague inspiration</li>
+            <li>Broad self-improvement advice</li>
+            <li>People looking for "just chat with AI"</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 8. Final CTA -->
+  <section class="final-cta" id="cta">
+    <div class="final-cta-glow"></div>
+    <div class="container">
+      <h2 class="fade-up">Get clear before you<br>build the wrong thing.</h2>
+      <p class="fade-up stagger-1">Use ActuallyShip to turn product chaos into a build-ready direction.</p>
+      <div class="cta-group fade-up stagger-2">
+        <div class="cta-row">
+          <a href="https://buy.stripe.com/00w28r4JU2Bm3wH6b8f7i08" class="cta-button cta-button-primary">
+            Start a shipping session
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8H12.5M9 4.5L12.5 8L9 11.5"/></svg>
+          </a>
+          <a href="https://buy.stripe.com/00w28r4JU2Bm3wH6b8f7i08" class="cta-button cta-button-secondary">Try ActuallyShip now</a>
+        </div>
+        <span class="cta-sub">Free for 7 days, then $29.99/mo. Cancel anytime.</span>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2026 ActuallyShip</p>
+  </footer>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
